@@ -21,13 +21,6 @@ for volcano in range(len(data["features"])):
 # Create initial map
 map = folium.Map(location = [37,-95], zoom_start=5)
 
-# Create feature group called volcanoes for the map
-fgv = folium.FeatureGroup(name = "Volcanoes")
-
-# Add markers for each volcano
-for lt, ln, nm in zip(lat, lon, name):
-    fgv.add_child(folium.CircleMarker(location = [lt, ln], radius = 6, popup = str(nm)))
-
 # Create feature group called population
 fgp = folium.FeatureGroup(name = "Population")
 
@@ -37,8 +30,16 @@ style_function = lambda x: {'fillColor':'green' if x['properties']['POP2005'] < 
  else 'orange' if 10000000 <= x['properties']['POP2005'] < 20000000 else 'red'}))
 
 
-map.add_child(fgv)
+# Create feature group called volcanoes for the map
+fgv = folium.FeatureGroup(name = "Volcanoes")
+
+# Add markers for each volcano
+for lt, ln, nm in zip(lat, lon, name):
+    fgv.add_child(folium.CircleMarker(location = [lt, ln], radius = 6, popup = str(nm)))
+
+
 map.add_child(fgp)
+map.add_child(fgv)
 map.add_child(folium.LayerControl())
 
 map.save("Map1.html")
